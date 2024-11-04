@@ -1,0 +1,5732 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Zyxel Nebula OpenAPI",
+    "description": "Zyxel Nebula OpenAPI",
+    "version": "0.1.29"
+  },
+  "servers": [
+    {
+      "url": "https://api.nebula.zyxel.com",
+      "description": "Production OpenAPI endpoint"
+    }
+  ],
+  "paths": {
+    "/v1/nebula/{siteId}/ap/{devId}/ip-status": {
+      "get": {
+        "tags": [
+          "ap"
+        ],
+        "summary": "Get Access Point Ip Status",
+        "description": "This API returns the current IP status (instead of configuration) of AP interfaces.",
+        "operationId": "/v1/nebula/siteid/ap/devid/ip-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DevInterfaceIPStatus"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDeviceNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/ap/{devId}/ports-status": {
+      "get": {
+        "tags": [
+          "ap"
+        ],
+        "summary": "Get Access Point Port Status",
+        "operationId": "/v1/nebula/siteid/ap/devid/ports-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/APPortPhyStatus"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDeviceNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/ap/wlan-settings": {
+      "get": {
+        "tags": [
+          "ap"
+        ],
+        "summary": "Get Wlan Settings",
+        "description": "Note: This API always returns 8 SSIDs.",
+        "operationId": "/v1/nebula/siteid/ap/wlan-settings@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SSIDSetting"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "ap"
+        ],
+        "summary": "Patch Wlan Settings",
+        "description": "Note: currently this API only supports PSK\nFor [PATCH] method on wlan-setting API, it will only update the SSID Pre-Shared-Key (PSK), no matter the SSID security mode is WPA2/3 or not.",
+        "operationId": "/v1/nebula/siteid/ap/wlan-settings@patch",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SSIDSettingConfig"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/ap/logout-user": {
+      "post": {
+        "tags": [
+          "ap"
+        ],
+        "summary": "Ap Logout User",
+        "description": "Logout AP users in the site. Every AP will be instructed to logout the users.",
+        "operationId": "/v1/nebula/siteid/ap/logout-user@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/gw/{devId}/ports-status": {
+      "get": {
+        "tags": [
+          "gw"
+        ],
+        "summary": "Get Gateway Port Status",
+        "operationId": "/v1/nebula/siteid/gw/devid/ports-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GWPortPhyStatus"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDeviceNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/gw/{devId}/system-status": {
+      "get": {
+        "tags": [
+          "gw"
+        ],
+        "summary": "Get Gateway System Status",
+        "operationId": "/v1/nebula/siteid/gw/devid/system-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDeviceNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/gw/{devId}/traffic-usage": {
+      "get": {
+        "tags": [
+          "gw"
+        ],
+        "summary": "Get Secure Gateway Traffic Usage",
+        "operationId": "/v1/nebula/siteid/gw/devid/traffic-usage@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/TrafficUsagePeriod"
+                }
+              ],
+              "default": "1d"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GWTrafficUsage"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDeviceNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/gw/event-logs": {
+      "post": {
+        "tags": [
+          "gw"
+        ],
+        "summary": "Get Gateway Event Logs",
+        "operationId": "/v1/nebula/siteid/gw/event-logs@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventLogsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GWEventLogEntry"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/gw/{devId}/nat-settings": {
+      "get": {
+        "tags": [
+          "gw"
+        ],
+        "summary": "Get Firewall Nat Settings",
+        "operationId": "/v1/nebula/siteid/gw/devid/nat-settings@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NATSetting"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDeviceNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/gw/{devId}/interface-settings": {
+      "get": {
+        "tags": [
+          "gw"
+        ],
+        "summary": "Get Firewall Interface Settings",
+        "operationId": "/v1/nebula/siteid/gw/devid/interface-settings@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GWInterfaceSetting"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDeviceNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/groups": {
+      "get": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Get Groups",
+        "operationId": "/v1/nebula/groups@get",
+        "parameters": [
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Group"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/groups/{groupId}/organizations": {
+      "get": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Get Organizations From A Group",
+        "operationId": "/v1/nebula/groups/groupid/organizations@get",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrgBaseInfo"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/organizations": {
+      "get": {
+        "tags": [
+          "organizations"
+        ],
+        "summary": "Get Orgnazations",
+        "description": "Get the organizations\n\n- **name**: Org's name\n- **orgId**: Org's unique ID\n- **mode**: Org's license mode",
+        "operationId": "/v1/nebula/organizations@get",
+        "parameters": [
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrgBaseInfo"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/organizations/{orgId}": {
+      "get": {
+        "tags": [
+          "organizations"
+        ],
+        "summary": "Get Org Info",
+        "operationId": "/v1/nebula/organizations/orgid@get",
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Org"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/organizations/{orgId}/sites": {
+      "get": {
+        "tags": [
+          "organizations"
+        ],
+        "summary": "Get Sites",
+        "operationId": "/v1/nebula/organizations/orgid/sites@get",
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/Site"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/organizations/{orgId}/sites/devices": {
+      "get": {
+        "tags": [
+          "organizations"
+        ],
+        "summary": "Get Devices From An Org",
+        "operationId": "/v1/nebula/organizations/orgid/sites/devices@get",
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/SitesDevices"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/organizations/{orgId}/firmware-status": {
+      "get": {
+        "tags": [
+          "organizations"
+        ],
+        "summary": "Get Device Firmware Status From An Org",
+        "operationId": "/v1/nebula/organizations/orgid/firmware-status@get",
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeviceFirmwareStatus"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/firmware-status": {
+      "get": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Device Firmware Status From A Site",
+        "operationId": "/v1/nebula/siteid/firmware-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeviceFirmwareStatus"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/online-status": {
+      "get": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Devices Online By Type",
+        "operationId": "/v1/nebula/siteid/online-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/DeviceType"
+                }
+              ]
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeviceOnlineStatus"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/vpn-status": {
+      "get": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Site Vpn Status",
+        "operationId": "/v1/nebula/siteid/vpn-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteVPNStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/clients": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Site Clients",
+        "description": "Site-wide clients data in the last 2 hours.",
+        "operationId": "/v1/nebula/siteid/clients@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ClientAttributesReq"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GenericClient"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/ap-clients": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Ap Clients",
+        "description": "AP clients data in the last 2 hours.",
+        "operationId": "/v1/nebula/siteid/ap-clients@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/APClientAttributesReq"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/APClient"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/livetool/{devId}/ping": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Ping",
+        "description": "Ping the target address.\nThe token must be null to initialize the ping task, and then use the returned token to fetch the results.",
+        "operationId": "/v1/nebula/siteid/livetool/devid/ping@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PingReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/livetool/{devId}/reboot": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Reboot",
+        "operationId": "/v1/nebula/siteid/livetool/devid/reboot@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/livetool/{devId}/cable-test": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Cable Test",
+        "description": "Start the switch device's cable diagnostics test.",
+        "operationId": "/v1/nebula/siteid/livetool/devid/cable-test@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CableTestReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CableTestResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/{devId}/connectivity": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Connectivity",
+        "description": "The device connectivity status in the last 2hr/1d/7d/30d",
+        "operationId": "/v1/nebula/siteid/devid/connectivity@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectivityReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Connectivity"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/nebula/{siteId}/clients": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Site Clients V2",
+        "description": "Site-wide clients data in the last 2hr/1d/7d/30d.<br> Response data key is macAddress.",
+        "operationId": "/v2/nebula/siteid/clients@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericClientReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericClients"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/nebula/{siteId}/ap-clients": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Ap Clients V2",
+        "description": "AP clients data in the last 2hr/1d/7d/30d.<br> Response data key is macAddress.",
+        "operationId": "/v2/nebula/siteid/ap-clients@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APClientReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APClients"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/nebula/{siteId}/sw-clients": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Sw Clients V2",
+        "description": "SW clients data in the last 2hr/1d/7d/30d.<br> Response data keys are macAddress and vlan.",
+        "operationId": "/v2/nebula/siteid/sw-clients@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SWClientReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SWClients"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/nebula/{siteId}/gw-clients": {
+      "post": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Gw Clients V2",
+        "description": "GW clients data in the last 2hr/1d/7d/30d.<br>        Firewall Respone data keys are macAddress, ipv4Address and interface.<br>        SCR Respone data key is macAddress.",
+        "operationId": "/v2/nebula/siteid/gw-clients@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GWClientReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GWClients"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/sw/{devId}/lldp-neighbor": {
+      "get": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Get Switch Lldp Neighbor",
+        "operationId": "/v1/nebula/siteid/sw/devid/lldp-neighbor@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/LLDPNeighbor"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/sw/{devId}/ip-status": {
+      "get": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Get Switch Ip Status",
+        "description": "The current IP status (instead of configuration) of the Switch device.\nOnly one IP data is returned in the array for now.",
+        "operationId": "/v1/nebula/siteid/sw/devid/ip-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/DevInterfaceIPStatus"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/sw/{devId}/l2-mac-table": {
+      "get": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Get Switch L2 Mac Table",
+        "operationId": "/v1/nebula/siteid/sw/devid/l2-mac-table@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/SWL2MACEntry"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/sw/{devId}/ports-status": {
+      "get": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Get Switch Port Status",
+        "operationId": "/v1/nebula/siteid/sw/devid/ports-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SWPortPhyStatus"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/sw/{devId}/port-settings": {
+      "get": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Get Switch Port Setting",
+        "operationId": "/v1/nebula/siteid/sw/devid/port-settings@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SwitchPortSetting"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Change Switch Port Setting",
+        "operationId": "/v1/nebula/siteid/sw/devid/port-settings@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwitchPortSettingConfig"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/sw/{devId}/poe-status": {
+      "get": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Get Switch Poe Status",
+        "operationId": "/v1/nebula/siteid/sw/devid/poe-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SWPOEStatus"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/sw/{devId}/traffic-usage": {
+      "get": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Get Switch Traffic Usage",
+        "operationId": "/v1/nebula/siteid/sw/devid/traffic-usage@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/TrafficUsagePeriod"
+                }
+              ],
+              "default": "1d"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SWTrafficUsage"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/sw/{devId}/event-logs": {
+      "post": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Get Sw Event Logs",
+        "operationId": "/v1/nebula/siteid/sw/devid/event-logs@post",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventLogsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SWEventLogEntry"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/sw/{devId}/uplink": {
+      "get": {
+        "tags": [
+          "sw"
+        ],
+        "summary": "Get Switch Uplink Port",
+        "operationId": "/v1/nebula/siteid/sw/devid/uplink@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SWPortUplink"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDeviceNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "523": {
+            "description": "Device Offline",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceOfflineResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nebula/{siteId}/wwan/{devId}/wwan-status": {
+      "get": {
+        "tags": [
+          "wwan"
+        ],
+        "summary": "Get Wwan Device Status",
+        "description": "Mobile Router's WWAN Status.",
+        "operationId": "/v1/nebula/siteid/wwan/devid/wwan-status@get",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-ZyxelNebula-API-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WWANStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDeviceNotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "523": {
+            "description": "Device Offline",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceOfflineResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "APClient": {
+        "properties": {
+          "macAddress": {
+            "type": "string"
+          },
+          "ipv4Address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "connectedTo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "firstSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "osHostname": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OSHostname"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "manufacturer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ssid": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APClientSSID"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "wifiStation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APClientInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "macAddress",
+          "ssid",
+          "wifiStation"
+        ],
+        "title": "ApClient"
+      },
+      "APClientAttributesReq": {
+        "type": "string",
+        "enum": [
+          "mac_address",
+          "ipv4",
+          "last_seen",
+          "connected_device_id",
+          "first_seen",
+          "description",
+          "os_hostname",
+          "manufacturer",
+          "ssid",
+          "wifi_sta"
+        ],
+        "title": "ApClientAttributesReq"
+      },
+      "APClientAttributesReqV2": {
+        "type": "string",
+        "enum": [
+          "mac_address",
+          "ipv4",
+          "last_seen",
+          "connected_device_id",
+          "first_seen",
+          "description",
+          "os_hostname",
+          "manufacturer",
+          "ssid",
+          "wifi_sta",
+          "user",
+          "upload",
+          "download"
+        ],
+        "title": "ApClientAttributesReqV2"
+      },
+      "APClientInfo": {
+        "properties": {
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OnlineOffline"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "vlan": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "signal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "band": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WiFiBand"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "channel": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "vlan",
+          "signal",
+          "band",
+          "channel"
+        ],
+        "title": "ApClientInfo"
+      },
+      "APClientReq": {
+        "properties": {
+          "period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClientPeriod"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "default is 2h"
+          },
+          "featrues": {
+            "items": {
+              "$ref": "#/components/schemas/APClientAttributesReqV2"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period",
+          "featrues"
+        ],
+        "title": "ApClientReq"
+      },
+      "APClientSSID": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "security": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WiFiSecurityType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "security"
+        ],
+        "title": "ApClientSsid"
+      },
+      "APClientV2": {
+        "properties": {
+          "macAddress": {
+            "type": "string"
+          },
+          "ipv4Address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "connectedTo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "firstSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "osHostname": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OSHostname"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "manufacturer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ssid": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APClientSSID"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "wifiStation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APClientInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "user": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "upload": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Upload (bytes)"
+          },
+          "download": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Download (bytes)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "macAddress",
+          "ssid",
+          "wifiStation"
+        ],
+        "title": "ApClientV2"
+      },
+      "APClients": {
+        "properties": {
+          "KeyFields": {
+            "items": {
+              "$ref": "#/components/schemas/KeyField"
+            },
+            "type": "array",
+            "description": "Fields for separating different clients."
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/APClientV2"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "KeyFields",
+          "data"
+        ],
+        "title": "ApClients"
+      },
+      "APPortPhyStatus": {
+        "properties": {
+          "port": {
+            "type": "string"
+          },
+          "linkSpeed": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "port",
+          "linkSpeed"
+        ],
+        "title": "ApPortPhyStatus"
+      },
+      "CableTestPortChannelResult": {
+        "properties": {
+          "channel": {
+            "type": "string"
+          },
+          "pairStatus": {
+            "type": "string"
+          },
+          "pairLength": {
+            "type": "string"
+          },
+          "pairDistanceToFault": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "channel",
+          "pairStatus",
+          "pairLength",
+          "pairDistanceToFault"
+        ],
+        "title": "CableTestPortChannelResult"
+      },
+      "CableTestPortResult": {
+        "properties": {
+          "port": {
+            "type": "integer"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/CableTestPortChannelResult"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "port",
+          "results"
+        ],
+        "title": "CableTestPortResult"
+      },
+      "CableTestReq": {
+        "properties": {
+          "ports": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ports"
+        ],
+        "title": "CableTestReq"
+      },
+      "CableTestResp": {
+        "properties": {
+          "ports": {
+            "items": {
+              "$ref": "#/components/schemas/CableTestPortResult"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ports"
+        ],
+        "title": "CableTestResp"
+      },
+      "ChassisidSubtype": {
+        "type": "string",
+        "enum": [
+          "CHASSIS_COMPONENT",
+          "INTERFACE_ALIAS",
+          "PORT_COMPONENT",
+          "MAC_ADDRESS",
+          "NETWORK_ADDRESS",
+          "INTERFACE_NAME",
+          "LOCAL"
+        ],
+        "title": "ChassisidSubtype"
+      },
+      "ClientAccessVPNStatus": {
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "hostname": {
+            "type": "string"
+          },
+          "publicIPv4": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "asssignedIPv4": {
+            "type": "string",
+            "format": "ipv4"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "hostname",
+          "publicIPv4",
+          "asssignedIPv4"
+        ],
+        "title": "ClientAccessVpnStatus"
+      },
+      "ClientAttributesReq": {
+        "type": "string",
+        "enum": [
+          "mac_address",
+          "ipv4",
+          "vlan",
+          "last_seen",
+          "connected_device_id",
+          "status",
+          "first_seen",
+          "description",
+          "os_hostname",
+          "manufacturer"
+        ],
+        "title": "ClientAttributesReq"
+      },
+      "ClientPeriod": {
+        "type": "string",
+        "enum": [
+          "2h",
+          "1d",
+          "7d",
+          "30d"
+        ],
+        "title": "ClientPeriod"
+      },
+      "Connectivity": {
+        "properties": {
+          "begin_time": {
+            "type": "integer"
+          },
+          "end_time": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "begin_time",
+          "end_time",
+          "status"
+        ],
+        "title": "Connectivity"
+      },
+      "ConnectivityReq": {
+        "properties": {
+          "period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClientPeriod"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "period"
+        ],
+        "title": "ConnectivityReq"
+      },
+      "DevInterfaceIPStatus": {
+        "properties": {
+          "interface": {
+            "type": "string"
+          },
+          "ipv4Type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IPv4Type"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ipv4Address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ipv4Netmask": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ipv4Gateway": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "DNSServers": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "ipv4"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array"
+          },
+          "vlan": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "interface",
+          "ipv4Type",
+          "ipv4Address",
+          "ipv4Netmask",
+          "ipv4Gateway",
+          "DNSServers"
+        ],
+        "title": "DevInterfaceIpStatus"
+      },
+      "Device": {
+        "properties": {
+          "devId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          },
+          "sn": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DeviceType"
+          }
+        },
+        "type": "object",
+        "required": [
+          "devId",
+          "name",
+          "mac",
+          "sn",
+          "model",
+          "type"
+        ],
+        "title": "Device"
+      },
+      "DeviceFirmwareStatus": {
+        "properties": {
+          "devId": {
+            "type": "string"
+          },
+          "currentVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "latestVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FirmwareStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastUpgradeTime": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "devId",
+          "currentVersion",
+          "latestVersion",
+          "status",
+          "lastUpgradeTime"
+        ],
+        "title": "DeviceFirmwareStatus"
+      },
+      "DeviceOfflineResponse": {
+        "properties": {
+          "body": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "integer",
+            "enum": [
+              523
+            ],
+            "const": 523
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "Device Offline"
+            ],
+            "const": "Device Offline"
+          }
+        },
+        "type": "object",
+        "required": [
+          "body",
+          "status",
+          "message"
+        ],
+        "title": "DeviceOfflineResponse"
+      },
+      "DeviceOnlineStatus": {
+        "properties": {
+          "devId": {
+            "type": "string"
+          },
+          "currentStatus": {
+            "$ref": "#/components/schemas/OnlineOffline"
+          }
+        },
+        "type": "object",
+        "required": [
+          "devId",
+          "currentStatus"
+        ],
+        "title": "DeviceOnlineStatus"
+      },
+      "DeviceType": {
+        "type": "string",
+        "enum": [
+          "AP",
+          "SW",
+          "GW",
+          "FIREWALL",
+          "WWAN",
+          "SCR",
+          "GWH",
+          "ACCY"
+        ],
+        "title": "DeviceType"
+      },
+      "EventLogsReq": {
+        "properties": {
+          "startTimestamp": {
+            "type": "integer",
+            "description": "unit: Unix timestamp (ms)"
+          },
+          "endTimestamp": {
+            "type": "integer",
+            "description": "unit: Unix timestamp (ms)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "startTimestamp",
+          "endTimestamp"
+        ],
+        "title": "EventLogsReq"
+      },
+      "FirmwareStatus": {
+        "type": "string",
+        "enum": [
+          "N/A",
+          "UP_TO_DATE",
+          "NOT_UP_TO_DATE",
+          "DEDICATED"
+        ],
+        "title": "FirmwareStatus"
+      },
+      "GWClient": {
+        "properties": {
+          "macAddress": {
+            "type": "string"
+          },
+          "ipv4Address": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "lastSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "connectedTo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "firstSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "osHostname": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OSHostname"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "manufacturer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "interface": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "macAddress",
+          "ipv4Address",
+          "interface"
+        ],
+        "title": "GwClient"
+      },
+      "GWClientAttributesReq": {
+        "type": "string",
+        "enum": [
+          "mac_address",
+          "ipv4",
+          "last_seen",
+          "connected_device_id",
+          "first_seen",
+          "description",
+          "os_hostname",
+          "manufacturer",
+          "interface"
+        ],
+        "title": "GwClientAttributesReq"
+      },
+      "GWClientReq": {
+        "properties": {
+          "period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClientPeriod"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "default is 2h"
+          },
+          "featrues": {
+            "items": {
+              "$ref": "#/components/schemas/GWClientAttributesReq"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period",
+          "featrues"
+        ],
+        "title": "GwClientReq"
+      },
+      "GWClients": {
+        "properties": {
+          "KeyFields": {
+            "items": {
+              "$ref": "#/components/schemas/KeyField"
+            },
+            "type": "array",
+            "description": "Fields for separating different clients."
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/GWClient"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "KeyFields",
+          "data"
+        ],
+        "title": "GwClients"
+      },
+      "GWEventLogEntry": {
+        "properties": {
+          "timestamp": {
+            "type": "integer"
+          },
+          "category": {
+            "type": "string"
+          },
+          "devId": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "srcIpv4": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "srcPort": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "dstIpv4": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "dstPort": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "GwEventLogEntry"
+      },
+      "GWInterfaceSetting": {
+        "properties": {
+          "wan": {
+            "items": {
+              "$ref": "#/components/schemas/GWWANInterfaceStatus"
+            },
+            "type": "array"
+          },
+          "lan": {
+            "items": {
+              "$ref": "#/components/schemas/GWLANInterfaceStatus"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "wan",
+          "lan"
+        ],
+        "title": "GwInterfaceSetting"
+      },
+      "GWLANInterfaceStatus": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "portGroupId": {
+            "type": "string"
+          },
+          "interface": {
+            "type": "string"
+          },
+          "ipv4Type": {
+            "$ref": "#/components/schemas/IPv4Type"
+          },
+          "ipv4Address": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "ipv4Netmask": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "guestZone": {
+            "type": "boolean"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "enabled",
+          "portGroupId",
+          "interface",
+          "ipv4Type",
+          "ipv4Address",
+          "ipv4Netmask",
+          "guestZone"
+        ],
+        "title": "GwlanInterfaceStatus"
+      },
+      "GWPortPhyStatus": {
+        "properties": {
+          "portNumber": {
+            "type": "string"
+          },
+          "portGroup": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "linkSpeed": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "portNumber",
+          "portGroup",
+          "linkSpeed"
+        ],
+        "title": "GwPortPhyStatus"
+      },
+      "GWTrafficUsage": {
+        "properties": {
+          "interface": {
+            "type": "string"
+          },
+          "uplinkTxUsage": {
+            "type": "integer"
+          },
+          "uplinkRxUage": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "interface",
+          "uplinkTxUsage",
+          "uplinkRxUage"
+        ],
+        "title": "GwTrafficUsage"
+      },
+      "GWWANInterfaceStatus": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "portGroupId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "interface": {
+            "type": "string"
+          },
+          "ipv4Type": {
+            "$ref": "#/components/schemas/WANIPv4Type"
+          },
+          "ipv4Address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ipv4Netmask": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ipv4Gateway": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "DNSServers": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "ipv4"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array"
+          },
+          "vlan": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "enabled",
+          "portGroupId",
+          "interface",
+          "ipv4Type",
+          "ipv4Address",
+          "ipv4Netmask",
+          "ipv4Gateway",
+          "DNSServers"
+        ],
+        "title": "GwwanInterfaceStatus"
+      },
+      "GenericClient": {
+        "properties": {
+          "macAddress": {
+            "type": "string"
+          },
+          "ipv4Address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "vlan": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "connectedTo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/OnlineOffline"
+          },
+          "firstSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "osHostname": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OSHostname"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "manufacturer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "macAddress",
+          "status"
+        ],
+        "title": "GenericClient"
+      },
+      "GenericClientReq": {
+        "properties": {
+          "period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClientPeriod"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "default is 2h"
+          },
+          "featrues": {
+            "items": {
+              "$ref": "#/components/schemas/ClientAttributesReq"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period",
+          "featrues"
+        ],
+        "title": "GenericClientReq"
+      },
+      "GenericClients": {
+        "properties": {
+          "KeyFields": {
+            "items": {
+              "$ref": "#/components/schemas/KeyField"
+            },
+            "type": "array",
+            "description": "Fields for separating different clients."
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/GenericClient"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "KeyFields",
+          "data"
+        ],
+        "title": "GenericClients"
+      },
+      "GenericResp": {
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "GenericResp"
+      },
+      "Group": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "groupId": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "groupId"
+        ],
+        "title": "Group"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "title": "HttpValidationError"
+      },
+      "IPv4Type": {
+        "type": "string",
+        "enum": [
+          "STATIC",
+          "DHCP"
+        ],
+        "title": "IPv4Type"
+      },
+      "KeyField": {
+        "type": "string",
+        "enum": [
+          "macAddress",
+          "ipv4Address",
+          "interface",
+          "vlan"
+        ],
+        "title": "KeyField"
+      },
+      "LLDPNeighbor": {
+        "properties": {
+          "lldpRemLocalPortNum": {
+            "type": "string"
+          },
+          "lldpRemPortId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lldpRemPortDesc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lldpRemSysName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lldpRemChassisId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lldpRemChassisIdSubtype": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ChassisidSubtype"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Type of chassis ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lldpRemLocalPortNum",
+          "lldpRemPortId",
+          "lldpRemPortDesc",
+          "lldpRemSysName",
+          "lldpRemChassisId",
+          "lldpRemChassisIdSubtype"
+        ],
+        "description": "Note: reference LLDP MIB lldpRemEntry",
+        "title": "LldpNeighbor"
+      },
+      "NATSetting": {
+        "properties": {
+          "oneToOne": {
+            "items": {
+              "$ref": "#/components/schemas/OneToOneEntry"
+            },
+            "type": "array"
+          },
+          "virtualServer": {
+            "items": {
+              "$ref": "#/components/schemas/VirtualServerEntry"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "oneToOne",
+          "virtualServer"
+        ],
+        "title": "NatSetting"
+      },
+      "NonNebulaGatewayVPNStatus": {
+        "properties": {
+          "peer": {
+            "type": "string"
+          },
+          "subnets": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "tunnel": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/VPNTunnelStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "peer",
+          "subnets",
+          "tunnel"
+        ],
+        "title": "NonNebulaGatewayVpnStatus"
+      },
+      "OSHostname": {
+        "properties": {
+          "os": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hostname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "os",
+          "hostname"
+        ],
+        "title": "OsHostname"
+      },
+      "OneToOneEntry": {
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "interface": {
+            "type": "string"
+          },
+          "publicIPv4": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "privateIPv4": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "inbound": {
+            "items": {
+              "$ref": "#/components/schemas/OneToOneInboundConnection"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "enabled",
+          "name",
+          "interface",
+          "publicIPv4",
+          "privateIPv4",
+          "inbound"
+        ],
+        "title": "OneToOneEntry"
+      },
+      "OneToOneInboundConnection": {
+        "properties": {
+          "enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "protocol": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "port": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "remote": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "enabled",
+          "protocol",
+          "port",
+          "remote"
+        ],
+        "title": "OneToOneInboundConnection"
+      },
+      "OnlineOffline": {
+        "type": "string",
+        "enum": [
+          "ONLINE",
+          "OFFLINE"
+        ],
+        "title": "OnlineOffline"
+      },
+      "Org": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "orgId": {
+            "type": "string"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/OrgMode"
+          },
+          "prevMode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OrgMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mspId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "licenseOverview": {
+            "$ref": "#/components/schemas/OrgLicenseOverview"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "orgId",
+          "mode",
+          "licenseOverview"
+        ],
+        "title": "Org"
+      },
+      "OrgBaseInfo": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "orgId": {
+            "type": "string"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/OrgMode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "orgId",
+          "mode"
+        ],
+        "title": "OrgBaseInfo"
+      },
+      "OrgLicenseOverview": {
+        "properties": {
+          "NCCTrialEndAt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "NCCExpiredAt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "NCCTrialEndAt",
+          "NCCExpiredAt"
+        ],
+        "title": "OrgLicenseOverview"
+      },
+      "OrgMode": {
+        "type": "string",
+        "enum": [
+          "PRO",
+          "PLUS",
+          "TRIAL",
+          "BASE",
+          "HAAS",
+          "POSTPAY"
+        ],
+        "title": "OrgMode"
+      },
+      "PingReq": {
+        "properties": {
+          "target": {
+            "type": "string"
+          },
+          "token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "target"
+        ],
+        "title": "PingReq"
+      },
+      "PingResp": {
+        "properties": {
+          "token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "isDone": {
+            "type": "boolean"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PingResult"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "isDone"
+        ],
+        "title": "PingResp"
+      },
+      "PingResult": {
+        "properties": {
+          "seq": {
+            "type": "integer"
+          },
+          "loss": {
+            "type": "boolean"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "unit: Unix timestamp"
+          },
+          "elapsedTime": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "seq",
+          "loss",
+          "timestamp",
+          "elapsedTime"
+        ],
+        "title": "PingResult"
+      },
+      "PortPOEUsage": {
+        "properties": {
+          "portNum": {
+            "type": "integer"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "usage": {
+            "type": "number"
+          }
+        },
+        "type": "object",
+        "required": [
+          "portNum",
+          "enabled",
+          "usage"
+        ],
+        "description": "An Ethernet Port's POE Usage",
+        "title": "PortPoeUsage"
+      },
+      "RemoteAPVPNStatus": {
+        "properties": {
+          "devId": {
+            "type": "string"
+          },
+          "uptime": {
+            "type": "integer"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastHeartbeat": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "devId",
+          "uptime",
+          "status",
+          "lastHeartbeat"
+        ],
+        "title": "RemoteApvpnStatus"
+      },
+      "SSIDSetting": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "security": {
+            "$ref": "#/components/schemas/WiFiSecurityType"
+          },
+          "band": {
+            "items": {
+              "$ref": "#/components/schemas/WiFiBand"
+            },
+            "type": "array"
+          },
+          "visibility": {
+            "type": "boolean"
+          },
+          "vlan": {
+            "type": "integer"
+          },
+          "wpaKey": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "captivePortal": {
+            "$ref": "#/components/schemas/WiFiCaptivePortal"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "enabled",
+          "security",
+          "band",
+          "visibility",
+          "vlan",
+          "wpaKey",
+          "captivePortal"
+        ],
+        "title": "SsidSetting"
+      },
+      "SSIDSettingConfig": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "maximum": 8,
+            "exclusiveMinimum": 0,
+            "description": "Index from 1 to 8"
+          },
+          "wpaKey": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "wpaKey"
+        ],
+        "title": "SsidSettingConfig"
+      },
+      "SWClient": {
+        "properties": {
+          "macAddress": {
+            "type": "string"
+          },
+          "ipv4Address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "connectedTo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "connectedPort": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "firstSeen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "manufacturer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "vlan": {
+            "type": "integer"
+          },
+          "lldp": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "macAddress",
+          "vlan",
+          "lldp"
+        ],
+        "title": "SwClient"
+      },
+      "SWClientAttributesReq": {
+        "type": "string",
+        "enum": [
+          "mac_address",
+          "ipv4",
+          "last_seen",
+          "connected_device_id",
+          "connected_port",
+          "first_seen",
+          "description",
+          "manufacturer",
+          "vlan",
+          "lldp_info"
+        ],
+        "title": "SwClientAttributesReq"
+      },
+      "SWClientReq": {
+        "properties": {
+          "period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClientPeriod"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "default is 2h"
+          },
+          "featrues": {
+            "items": {
+              "$ref": "#/components/schemas/SWClientAttributesReq"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period",
+          "featrues"
+        ],
+        "title": "SwClientReq"
+      },
+      "SWClients": {
+        "properties": {
+          "KeyFields": {
+            "items": {
+              "$ref": "#/components/schemas/KeyField"
+            },
+            "type": "array",
+            "description": "Fields for separating different clients."
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SWClient"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "KeyFields",
+          "data"
+        ],
+        "title": "SwClients"
+      },
+      "SWEventLogEntry": {
+        "properties": {
+          "timestamp": {
+            "type": "integer",
+            "description": "unit: Unix timestamp"
+          },
+          "category": {
+            "type": "string"
+          },
+          "devId": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "timestamp",
+          "category",
+          "devId",
+          "mac",
+          "message",
+          "priority",
+          "tag"
+        ],
+        "title": "SwEventLogEntry"
+      },
+      "SWL2MACEntry": {
+        "properties": {
+          "macAddress": {
+            "type": "string"
+          },
+          "vlan": {
+            "type": "integer"
+          },
+          "portNum": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "macAddress",
+          "vlan",
+          "portNum"
+        ],
+        "title": "Swl2MacEntry"
+      },
+      "SWPOEStatus": {
+        "properties": {
+          "budget": {
+            "type": "number"
+          },
+          "currentUsage": {
+            "type": "number"
+          },
+          "ports": {
+            "items": {
+              "$ref": "#/components/schemas/PortPOEUsage"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "budget",
+          "currentUsage",
+          "ports"
+        ],
+        "title": "SwpoeStatus"
+      },
+      "SWPortPhyStatus": {
+        "properties": {
+          "portNum": {
+            "type": "integer"
+          },
+          "linkSpeed": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "portNum",
+          "linkSpeed"
+        ],
+        "title": "SwPortPhyStatus"
+      },
+      "SWPortUplink": {
+        "properties": {
+          "portNum": {
+            "type": "integer",
+            "description": "the port is being used for the uplink connection"
+          }
+        },
+        "type": "object",
+        "required": [
+          "portNum"
+        ],
+        "title": "SwPortUplink"
+      },
+      "SWTrafficUsage": {
+        "properties": {
+          "devId": {
+            "type": "string"
+          },
+          "uplinkTxUsage": {
+            "type": "integer"
+          },
+          "uplinkRxUage": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "devId",
+          "uplinkTxUsage",
+          "uplinkRxUage"
+        ],
+        "title": "SwTrafficUsage"
+      },
+      "Site": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "siteId": {
+            "type": "string"
+          },
+          "timeZone": {
+            "type": "string"
+          },
+          "deviceCount": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "siteId",
+          "timeZone",
+          "deviceCount"
+        ],
+        "title": "Site"
+      },
+      "Site2SiteVPNStatus": {
+        "properties": {
+          "siteId": {
+            "type": "string"
+          },
+          "subnets": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tunnel": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/VPNTunnelStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "siteId",
+          "subnets",
+          "tunnel"
+        ],
+        "title": "Site2SiteVpnStatus"
+      },
+      "SiteDeviceNotFoundResponse": {
+        "properties": {
+          "body": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "integer",
+            "enum": [
+              404
+            ],
+            "const": 404
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "siteId not Found",
+              "devId not Found"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "body",
+          "status",
+          "message"
+        ],
+        "title": "SiteDeviceNotFoundResponse"
+      },
+      "SiteNotFoundResponse": {
+        "properties": {
+          "body": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "integer",
+            "enum": [
+              404
+            ],
+            "const": 404
+          },
+          "message": {
+            "type": "string",
+            "enum": [
+              "siteId not Found"
+            ],
+            "const": "siteId not Found"
+          }
+        },
+        "type": "object",
+        "required": [
+          "body",
+          "status",
+          "message"
+        ],
+        "title": "SiteNotFoundResponse"
+      },
+      "SiteVPNStatus": {
+        "properties": {
+          "sites": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Site2SiteVPNStatus"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "gateways": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/NonNebulaGatewayVPNStatus"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "remoteAps": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/RemoteAPVPNStatus"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cleints": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ClientAccessVPNStatus"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "SiteVpnStatus"
+      },
+      "SitesDevices": {
+        "properties": {
+          "siteId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "If siteId is null, the device is under the org but not assigned to any site."
+          },
+          "devices": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Device"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "siteId",
+          "devices"
+        ],
+        "title": "SitesDevices"
+      },
+      "SwitchPortSetting": {
+        "properties": {
+          "portNum": {
+            "type": "integer"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "trunk": {
+            "type": "boolean"
+          },
+          "portVid": {
+            "type": "integer"
+          },
+          "allowedVLAN": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "hasPse": {
+            "type": "boolean"
+          },
+          "pseEnabled": {
+            "type": "boolean"
+          }
+        },
+        "type": "object",
+        "required": [
+          "portNum",
+          "enabled",
+          "trunk",
+          "portVid",
+          "allowedVLAN",
+          "hasPse",
+          "pseEnabled"
+        ],
+        "title": "SwitchPortSetting"
+      },
+      "SwitchPortSettingConfig": {
+        "properties": {
+          "portNum": {
+            "type": "integer"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "trunk": {
+            "type": "boolean"
+          },
+          "portVid": {
+            "type": "integer"
+          },
+          "allowedVLAN": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "pseEnabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "portNum",
+          "enabled",
+          "trunk",
+          "portVid",
+          "allowedVLAN",
+          "pseEnabled"
+        ],
+        "title": "SwitchPortSettingConfig"
+      },
+      "SystemStatus": {
+        "properties": {
+          "cpuUsage": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "memUsage": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sessions": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "cpuUsage",
+          "memUsage",
+          "sessions"
+        ],
+        "title": "SystemStatus"
+      },
+      "TrafficUsagePeriod": {
+        "type": "string",
+        "enum": [
+          "2h",
+          "1d",
+          "7d"
+        ],
+        "title": "TrafficUsagePeriod"
+      },
+      "VPNTunnelStatus": {
+        "properties": {
+          "uptime": {
+            "type": "integer"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastHeartbeat": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "uptime",
+          "status",
+          "lastHeartbeat"
+        ],
+        "title": "VpnTunnelStatus"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VirtualServerEntry": {
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "interface": {
+            "type": "string"
+          },
+          "protocol": {
+            "type": "integer"
+          },
+          "publicIPv4": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "publicPorts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "serverIPv4": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "serverPorts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "allowedRemote": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "enabled",
+          "description",
+          "interface",
+          "protocol",
+          "publicIPv4",
+          "publicPorts",
+          "serverIPv4",
+          "serverPorts",
+          "allowedRemote"
+        ],
+        "title": "VirtualServerEntry"
+      },
+      "WANIPv4Type": {
+        "type": "string",
+        "enum": [
+          "STATIC",
+          "DHCP",
+          "PPPOE",
+          "PPPOE_WITH_STATIC_IP"
+        ],
+        "title": "WaniPv4Type"
+      },
+      "WWANStatus": {
+        "properties": {
+          "ipv4Address": {
+            "type": "string",
+            "format": "ipv4",
+            "description": "WWAN IPv4 address"
+          },
+          "imei": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "imei"
+          },
+          "iccid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "iccid"
+          },
+          "rsrp": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "rsrp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ipv4Address",
+          "imei",
+          "iccid",
+          "rsrp"
+        ],
+        "title": "WwanStatus"
+      },
+      "WiFiBand": {
+        "type": "string",
+        "enum": [
+          "band24",
+          "band50",
+          "band60"
+        ],
+        "title": "WiFiBand"
+      },
+      "WiFiCaptivePortal": {
+        "type": "string",
+        "enum": [
+          "DISABLED",
+          "CLICK_TO_CONTINUE",
+          "CAPTIVE_PORTAL_CLOUD",
+          "CAPTIVE_PORTAL_RADIUS",
+          "SNS_FACEBOOK",
+          "SNS_FACEBOOK_WIFI",
+          "CAPTIVE_PORTAL_VOUCHER"
+        ],
+        "title": "WiFiCaptivePortal"
+      },
+      "WiFiSecurityType": {
+        "type": "string",
+        "enum": [
+          "OPEN",
+          "OPEN_ENHANCED",
+          "WPA2_PSK",
+          "WPA2_ENT_CLOUDAUTH",
+          "WPA2_ENT_RADIUS",
+          "WPA3_PSK",
+          "WPA3_ENT_CLOUDAUTH",
+          "WPA3_ENT_RADIUS"
+        ],
+        "title": "WiFiSecurityType"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "groups",
+      "description": "Group operations"
+    },
+    {
+      "name": "organizations",
+      "description": "Organization operations"
+    },
+    {
+      "name": "sites",
+      "description": "Site operations"
+    },
+    {
+      "name": "ap",
+      "description": "AP operations"
+    },
+    {
+      "name": "sw",
+      "description": "Switch operations"
+    },
+    {
+      "name": "gw",
+      "description": "Secure Gateway (NSG*/USG FLEX) operations"
+    },
+    {
+      "name": "wwan",
+      "description": "WWAN (Mobile Router) operations"
+    }
+  ]
+}

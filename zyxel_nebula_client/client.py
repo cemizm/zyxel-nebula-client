@@ -6,6 +6,14 @@ from .models import *
 from .consts import BASE_URL, ENDPOINTS
 
 
+class ZyxelNebulaError(Exception):
+    """Exception raised when there is a issue with Zyxel Nebula Client."""
+
+
+class ZyxelNebulaApiKeyError(ZyxelNebulaError):
+    """Exception raised when the Zyxel Nebula API key is invalid or expired."""
+
+
 class ZyxelNebulaClient:
     """
     ZyxelNebulaClient is a client for interacting with the Zyxel Nebula API, providing methods for managing organizations, devices, sites, and clients within the Nebula ecosystem.
@@ -16,6 +24,21 @@ class ZyxelNebulaClient:
         self.client.headers = {
             "X-ZyxelNebula-API-Key": api_key
         }
+        self.client.event_hooks['response'] = [self.raise_error]
+
+    async def raise_error(self, response: httpx.Response):
+        try:
+            response.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            if e.response.status_code == 401:
+                raise ZyxelNebulaApiKeyError(
+                    "The API token is invalid or has expired.") from e
+            raise ZyxelNebulaError() from e
+        except httpx.RequestError as e:
+            raise ZyxelNebulaError(
+                "Failed to connect to Zyxel Nebula. Please check your network connection.") from e
+        except Exception as e:
+            raise ConnectionError("An unexpected error occurred") from e
 
     async def get_groups(self) -> List[Group]:
         """

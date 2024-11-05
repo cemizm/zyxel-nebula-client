@@ -4,8 +4,35 @@ from dacite import from_dict, Config
 from httpx import AsyncClient
 from pytest_httpx import HTTPXMock
 from zyxel_nebula_client.consts import ENDPOINTS, BASE_URL
-from zyxel_nebula_client import ClientAttributesReq, ZyxelNebulaClient
-from zyxel_nebula_client.models import APClient, APClientAttributesReq, APClients, CableTestResp, ClientPeriod, Connectivity, Device, DeviceFirmwareStatus, DeviceOnlineStatus, DeviceType, FirmwareStatus, GWClients, GenericClient, GenericClients, GenericResp, Group, OnlineOffline, Org, OrgBaseInfo, OrgMode, PingResp, SWClients, SiteVPNStatus
+from zyxel_nebula_client import ZyxelNebulaClient, ZyxelNebulaApiKeyError, ZyxelNebulaError, ClientAttributesReq, APClient, APClientAttributesReq, APClients, CableTestResp, ClientPeriod, Connectivity, Device, DeviceFirmwareStatus, DeviceOnlineStatus, DeviceType, FirmwareStatus, GWClients, GenericClient, GenericClients, GenericResp, Group, OnlineOffline, Org, OrgBaseInfo, OrgMode, PingResp, SWClients, SiteVPNStatus
+
+
+@pytest.mark.asyncio
+async def test_authentication_error(httpx_mock: HTTPXMock):
+    """Test the `get_groups` method."""
+    client = ZyxelNebulaClient(api_key="dummy_api_key")
+
+    # Set up the expected URL and mock response
+    endpoint = BASE_URL + ENDPOINTS["GET_GROUPS"]
+    httpx_mock.add_response(url=endpoint, method="GET", status_code=401)
+
+    # Call the client method
+    with pytest.raises(ZyxelNebulaApiKeyError):
+        result = await client.get_groups()
+
+
+@pytest.mark.asyncio
+async def test_validation_error(httpx_mock: HTTPXMock):
+    """Test the `get_groups` method."""
+    client = ZyxelNebulaClient(api_key="dummy_api_key")
+
+    # Set up the expected URL and mock response
+    endpoint = BASE_URL + ENDPOINTS["GET_GROUPS"]
+    httpx_mock.add_response(url=endpoint, method="GET", status_code=422)
+
+    # Call the client method
+    with pytest.raises(ZyxelNebulaError):
+        result = await client.get_groups()
 
 
 @pytest.mark.asyncio

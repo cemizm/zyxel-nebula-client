@@ -11,9 +11,9 @@ class ZyxelNebulaClient:
     ZyxelNebulaClient is a client for interacting with the Zyxel Nebula API, providing methods for managing organizations, devices, sites, and clients within the Nebula ecosystem.
     """
 
-    def __init__(self, api_key: str):
-        self.api_key = api_key
-        self.headers = {
+    def __init__(self, api_key: str, client: httpx.AsyncClient = None):
+        self.client = client or httpx.AsyncClient()
+        self.client.headers = {
             "X-ZyxelNebula-API-Key": api_key
         }
 
@@ -35,11 +35,10 @@ class ZyxelNebulaClient:
         """
         url = BASE_URL + ENDPOINTS["GET_GROUPS"]
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=Group, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=Group, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def get_organizations_from_group(self, group_id: str) -> List[OrgBaseInfo]:
         """
@@ -64,11 +63,10 @@ class ZyxelNebulaClient:
         url = BASE_URL + \
             ENDPOINTS["GET_ORGANIZATIONS_FROM_GROUP"].format(group_id=group_id)
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=OrgBaseInfo, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=OrgBaseInfo, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def get_organizations(self) -> List[OrgBaseInfo]:
         """
@@ -88,11 +86,10 @@ class ZyxelNebulaClient:
         """
         url = BASE_URL + ENDPOINTS["GET_ORGANIZATIONS"]
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=OrgBaseInfo, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=OrgBaseInfo, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def get_organization_info(self, org_id: str) -> Org:
         """
@@ -117,11 +114,10 @@ class ZyxelNebulaClient:
         url = BASE_URL + \
             ENDPOINTS["GET_ORGANIZATION_INFO"].format(org_id=org_id)
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return from_dict(data_class=Org, data=data, config=Config(cast=[Enum]))
+        response = await self.client.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return from_dict(data_class=Org, data=data, config=Config(cast=[Enum]))
 
     async def get_sites(self, org_id: str) -> List[Site]:
         """
@@ -145,11 +141,10 @@ class ZyxelNebulaClient:
         """
         url = BASE_URL + ENDPOINTS["GET_SITES"].format(org_id=org_id)
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=Site, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=Site, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def get_devices_from_organization(self, org_id: str) -> List[Device]:
         """
@@ -174,11 +169,10 @@ class ZyxelNebulaClient:
         url = BASE_URL + \
             ENDPOINTS["GET_DEVICES_FROM_ORGANIZATION"].format(org_id=org_id)
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=Device, data=item, config=Config(cast=[Enum])) for item in data[0]["devices"]]
+        response = await self.client.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=Device, data=item, config=Config(cast=[Enum])) for item in data[0]["devices"]]
 
     async def get_device_firmware_status_from_organization(self, org_id: str) -> List[DeviceFirmwareStatus]:
         """
@@ -205,11 +199,10 @@ class ZyxelNebulaClient:
             ENDPOINTS["GET_DEVICE_FIRMWARE_STATUS_FROM_ORGANIZATION"].format(
                 org_id=org_id)
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=DeviceFirmwareStatus, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=DeviceFirmwareStatus, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def get_device_firmware_status_from_site(self, site_id: str) -> List[DeviceFirmwareStatus]:
         """
@@ -218,7 +211,7 @@ class ZyxelNebulaClient:
         This asynchronous method constructs a URL using the provided site ID, sends a GET request 
         to retrieve the firmware status of devices within the site, and returns a list of 
         `DeviceFirmwareStatus` objects representing the firmware status of each device.
-
+sensor
         Args:
             site_id (str): The unique identifier for the site.
 
@@ -236,11 +229,10 @@ class ZyxelNebulaClient:
             ENDPOINTS["GET_DEVICE_FIRMWARE_STATUS_FROM_SITE"].format(
                 site_id=site_id)
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=DeviceFirmwareStatus, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=DeviceFirmwareStatus, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def get_devices_device_online_by_type(self, site_id: str, device_type: DeviceType) -> List[DeviceOnlineStatus]:
         """
@@ -270,11 +262,10 @@ class ZyxelNebulaClient:
 
         params = {'type': device_type.value}
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers, params=params)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=DeviceOnlineStatus, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=DeviceOnlineStatus, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def get_site_vpn_status(self, site_id: str) -> SiteVPNStatus:
         """
@@ -301,11 +292,10 @@ class ZyxelNebulaClient:
             ENDPOINTS["GET_SITE_VPN_STATUS"].format(
                 site_id=site_id)
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return from_dict(data_class=SiteVPNStatus, data=data, config=Config(cast=[Enum]))
+        response = await self.client.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return from_dict(data_class=SiteVPNStatus, data=data, config=Config(cast=[Enum]))
 
     async def get_site_clients(self, site_id: str, attributes: List[ClientAttributesReq] = [ClientAttributesReq.mac_address]) -> List[GenericClient]:
         """
@@ -334,11 +324,10 @@ class ZyxelNebulaClient:
 
         payload = [attr.value for attr in attributes] if attributes else []
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=GenericClient, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=GenericClient, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def get_ap_clients(self, site_id: str, attributes: List[APClientAttributesReq] = [APClientAttributesReq.mac_address]) -> List[APClient]:
         """
@@ -367,11 +356,10 @@ class ZyxelNebulaClient:
 
         payload = [attr.value for attr in attributes] if attributes else []
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=APClient, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=APClient, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def ping(self, site_id: str, device_id: str, target: str) -> PingResp:
         """
@@ -401,11 +389,10 @@ class ZyxelNebulaClient:
 
         payload = {'target': target}
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return from_dict(data_class=PingResp, data=data, config=Config(cast=[Enum]))
+        response = await self.client.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return from_dict(data_class=PingResp, data=data, config=Config(cast=[Enum]))
 
     async def reboot(self, site_id: str, device_id: str) -> GenericResp:
         """
@@ -432,11 +419,10 @@ class ZyxelNebulaClient:
             ENDPOINTS["REBOOT"].format(
                 site_id=site_id, device_id=device_id)
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers)
-            response.raise_for_status()
-            data = response.json()
-            return from_dict(data_class=GenericResp, data=data, config=Config(cast=[Enum]))
+        response = await self.client.post(url)
+        response.raise_for_status()
+        data = response.json()
+        return from_dict(data_class=GenericResp, data=data, config=Config(cast=[Enum]))
 
     async def cable_test(self, site_id: str, device_id: str, ports: List[int]) -> CableTestResp:
         """
@@ -466,11 +452,10 @@ class ZyxelNebulaClient:
 
         payload = {'ports': ports}
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return from_dict(data_class=CableTestResp, data=data, config=Config(cast=[Enum]))
+        response = await self.client.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return from_dict(data_class=CableTestResp, data=data, config=Config(cast=[Enum]))
 
     async def connectivity(self, site_id: str, device_id: str, period: Optional[ClientPeriod] = ClientPeriod.field_2h) -> List[Connectivity]:
         """
@@ -501,11 +486,10 @@ class ZyxelNebulaClient:
 
         payload = {'period': period.value}
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return [from_dict(data_class=Connectivity, data=item, config=Config(cast=[Enum])) for item in data]
+        response = await self.client.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return [from_dict(data_class=Connectivity, data=item, config=Config(cast=[Enum])) for item in data]
 
     async def get_site_clients_v2(self, site_id: str, period: Optional[ClientPeriod] = ClientPeriod.field_2h, features: Optional[List[ClientAttributesReq]] = [ClientAttributesReq.mac_address], ) -> GenericClients:
         """
@@ -538,11 +522,11 @@ class ZyxelNebulaClient:
             "period": period.value if period else None,
             "featrues": [attr.value for attr in features] if features else []
         }
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return from_dict(data_class=GenericClients, data=data, config=Config(cast=[Enum]))
+
+        response = await self.client.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return from_dict(data_class=GenericClients, data=data, config=Config(cast=[Enum]))
 
     async def get_ap_clients_v2(self, site_id: str, period: Optional[ClientPeriod] = ClientPeriod.field_2h, features: Optional[List[APClientAttributesReqV2]] = [APClientAttributesReqV2.mac_address], ) -> APClients:
         """
@@ -575,11 +559,11 @@ class ZyxelNebulaClient:
             "period": period.value if period else None,
             "featrues": [attr.value for attr in features] if features else []
         }
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return from_dict(data_class=APClients, data=data, config=Config(cast=[Enum]))
+
+        response = await self.client.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return from_dict(data_class=APClients, data=data, config=Config(cast=[Enum]))
 
     async def get_sw_clients_v2(self, site_id: str, period: Optional[ClientPeriod] = ClientPeriod.field_2h, features: Optional[List[SWClientAttributesReq]] = [SWClientAttributesReq.mac_address], ) -> SWClients:
         """
@@ -612,11 +596,11 @@ class ZyxelNebulaClient:
             "period": period.value if period else None,
             "featrues": [attr.value for attr in features] if features else []
         }
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return from_dict(data_class=SWClients, data=data, config=Config(cast=[Enum]))
+
+        response = await self.client.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return from_dict(data_class=SWClients, data=data, config=Config(cast=[Enum]))
 
     async def get_gw_clients_v2(self, site_id: str, period: Optional[ClientPeriod] = ClientPeriod.field_2h, features: Optional[List[GWClientAttributesReq]] = [GWClientAttributesReq.mac_address], ) -> GWClients:
         """
@@ -649,8 +633,8 @@ class ZyxelNebulaClient:
             "period": period.value if period else None,
             "featrues": [attr.value for attr in features] if features else []
         }
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, headers=self.headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return from_dict(data_class=GWClients, data=data, config=Config(cast=[Enum]))
+
+        response = await self.client.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return from_dict(data_class=GWClients, data=data, config=Config(cast=[Enum]))

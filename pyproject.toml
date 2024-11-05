@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zyxel-nebula-client"
-version = "0.1.1"
+version = "0.1.2"
 description = "Python Client for interacting with the Zyxel Nebula API"
 authors = ["Cem Basoglu <cem.basoglu@web.de>"]
 readme = "README.md"
